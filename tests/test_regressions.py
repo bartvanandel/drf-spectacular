@@ -1145,7 +1145,7 @@ def test_mocked_request_with_get_queryset_get_serializer_class(no_warnings):
     class XViewset(viewsets.ReadOnlyModelViewSet):
         def get_serializer_class(self):
             assert not self.request.user.is_authenticated
-            assert self.action in ['retrieve', 'list']
+            assert self.action in ['retrieve', 'aretrieve', 'list', 'alist']
             assert getattr(self, 'swagger_fake_view', False)  # drf-yasg comp
             return SimpleSerializer
 
