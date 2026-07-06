@@ -881,6 +881,12 @@ class AutoSchema(ViewInspector):
             else:
                 use_url = getattr(field, 'use_url', api_settings.UPLOADED_FILES_USE_URL)
                 content = build_basic_type(OpenApiTypes.URI if use_url else OpenApiTypes.STR)
+
+            if (not spectacular_settings.COMPONENT_SPLIT_REQUEST or direction == 'response') and not field.required:
+                # FileField.to_representation returns None for empty values regardless of
+                # allow_null, so blank=True / required=False model fields produce null responses.
+                content['nullable'] = True
+
             return append_meta(content, meta)
 
         if isinstance(field, serializers.SerializerMethodField):
